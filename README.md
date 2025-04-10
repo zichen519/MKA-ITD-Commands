@@ -1,6 +1,8 @@
 # Welcome
 Welcome to the NextFTC Quickstart! It has NextFTC & PedroPathing integration built in.
 
+(For PedroPathing, use the `nextftc-and-pedropathing` branch).
+
 ---
 
 Check out the NextFTC Docs: <https://docs.rowanmcalpin.com/>  
