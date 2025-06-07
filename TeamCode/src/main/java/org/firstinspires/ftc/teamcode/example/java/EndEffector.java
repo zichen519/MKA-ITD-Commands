@@ -6,10 +6,10 @@ import com.rowanmcalpin.nextftc.core.command.Command;
 import com.rowanmcalpin.nextftc.ftc.OpModeData;
 import com.rowanmcalpin.nextftc.ftc.hardware.ServoToPosition;
 
-public class Claw extends Subsystem {
+public class EndEffector extends Subsystem {
     // BOILERPLATE
-    public static final Claw INSTANCE = new Claw();
-    private Claw() { }
+    public static final EndEffector INSTANCE = new EndEffector();
+    private EndEffector() { }
 
     // USER CODE
     public Servo servo;
