@@ -18,8 +18,10 @@ public class FFTuning extends NextFTCOpMode {
     }
 
     // Dashboard configurable feedforward constant
-    public static double feedforwardConstant = 0.09;
+    public static double feedforwardConstant = 0.0;
 
+    public static double ticksPerRevolution = 1993.6;  // GoBuilda Yellow Jacket 84 RPM
+    public static double gearRatio = 2.5;
     // PID values - keep at zero for pure feedforward tuning
     public static double p = 0.0;
     public static double i = 0.0;
@@ -29,16 +31,17 @@ public class FFTuning extends NextFTCOpMode {
     public static boolean enableFeedforward = true;
 
     // Motors
-    public MotorEx leftMotor;
-    public MotorEx rightMotor;
-    public MotorGroup liftMotors;
+    public MotorEx liftMotor;
 
+    private double calculateFeedforward() {
+        return Math.cos(Math.toRadians(target / ((ticksPerRevolution * gearRatio)/360))) * 0.01;
+    }
     // Controller
     public PIDFController controller;
 
     // Motor names
-    public String leftMotorName = "slide1";
-    public String rightMotorName = "slide2";
+    public String liftMotorName = "lift";
+
 
     // Current target (will be set to current position)
     private double target = 0;
@@ -46,24 +49,27 @@ public class FFTuning extends NextFTCOpMode {
     @Override
     public void onInit() {
         // Initialize motors
-        leftMotor = new MotorEx(leftMotorName);
-        leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightMotor = new MotorEx(rightMotorName);
-        rightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        liftMotor = new MotorEx(liftMotorName);
+        liftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         // Reset encoders
-        leftMotor.resetEncoder();
-        rightMotor.resetEncoder();
+        liftMotor.resetEncoder();
+
 
         // Create motor group
-        liftMotors = new MotorGroup(leftMotor, rightMotor);
+
 
         // Initialize controller with zero feedforward
-        controller = new PIDFController(0.0, 0.0, 0.0, new StaticFeedforward(feedforwardConstant));
+
+
+        // Arm feedforward (better for pivoting mechanisms than static feedforward)
+
+        controller = new PIDFController(p, i,d, v -> calculateFeedforward());
         controller.setSetPointTolerance(30);
 
         // Set target to current position
-        target = liftMotors.getCurrentPosition();
+        target = liftMotor.getCurrentPosition();
 
         telemetry.addLine("=== FEEDFORWARD TUNING MODE ===");
         telemetry.addLine("1. Lift slides by hand to desired height");
@@ -90,7 +96,7 @@ public class FFTuning extends NextFTCOpMode {
         controller.setKP(p);
         controller.setKI(i);
         controller.setKD(d);
-        liftMotors.setPower(controller.calculate(liftMotors.getCurrentPosition(), target));
+        liftMotor.setPower(controller.calculate(liftMotor.getCurrentPosition(), target));
         // Update feedforward if it changed
 
 
@@ -102,7 +108,7 @@ public class FFTuning extends NextFTCOpMode {
 
         // Telemetry
         telemetry.addLine("=== FEEDFORWARD TUNING ===");
-        telemetry.addData("Current Position", "%.1f", liftMotors.getCurrentPosition());
+        telemetry.addData("Current Position", "%.1f", liftMotor.getCurrentPosition());
 
 
         telemetry.addLine("=== DASHBOARD VALUES ===");
@@ -123,10 +129,9 @@ public class FFTuning extends NextFTCOpMode {
         // Motor status
         telemetry.addLine();
         telemetry.addLine("=== MOTOR STATUS ===");
-        telemetry.addData("Left Motor", "%.1f", leftMotor.getCurrentPosition());
-        telemetry.addData("Right Motor", "%.1f", rightMotor.getCurrentPosition());
-        telemetry.addData("Left Power", "%.3f", leftMotor.getPower());
-        telemetry.addData("Right Power", "%.3f", rightMotor.getPower());
+
+        telemetry.addData("Left Power", "%.3f", liftMotor.getPower());
+
 
         telemetry.update();
     }

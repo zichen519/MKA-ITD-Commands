@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.example.java.commands.EndEffectorPositions
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Claw;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Elbow;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Lift;
+import org.firstinspires.ftc.teamcode.example.java.subsystems.Linkage;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Rotate;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Wrist;
 
@@ -24,7 +25,14 @@ import org.firstinspires.ftc.teamcode.example.java.subsystems.Wrist;
 public class MainTele extends NextFTCOpMode {
 
     public MainTele() {
-        super(Elbow.INSTANCE, Wrist.INSTANCE, Rotate.INSTANCE, Claw.INSTANCE, Lift.INSTANCE);
+        super(
+                Elbow.INSTANCE,
+                Wrist.INSTANCE,
+                Rotate.INSTANCE,
+                Claw.INSTANCE,
+                Lift.INSTANCE,
+                Linkage.INSTANCE
+        );
     }
     public String frontLeftName = "leftFront";
     public String frontRightName = "rightFront";
