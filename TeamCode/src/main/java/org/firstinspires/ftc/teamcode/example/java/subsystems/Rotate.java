@@ -11,7 +11,7 @@ import com.rowanmcalpin.nextftc.ftc.hardware.MultipleServosToPosition;
 public class Rotate extends Subsystem {
     public static final Rotate INSTANCE = new Rotate();
     private Rotate() { }
-
+    public double offset = 0.2;
     public Servo rotate;
     public String rotateName = "rotate";
 
