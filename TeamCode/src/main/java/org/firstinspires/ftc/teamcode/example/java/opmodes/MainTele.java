@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode.example.java.opmodes;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.rowanmcalpin.nextftc.core.command.Command;
 import com.rowanmcalpin.nextftc.ftc.NextFTCOpMode;
+import com.rowanmcalpin.nextftc.ftc.OpModeData;
 import com.rowanmcalpin.nextftc.ftc.driving.MecanumDriverControlled;
 import com.rowanmcalpin.nextftc.ftc.hardware.controllables.MotorEx;
 
@@ -36,6 +39,8 @@ public class MainTele extends NextFTCOpMode {
 
     @Override
     public void onInit() {
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+        OpModeData.telemetry = telemetry;
         frontLeftMotor = new MotorEx(frontLeftName);
         backLeftMotor = new MotorEx(backLeftName);
         backRightMotor = new MotorEx(backRightName);
@@ -98,13 +103,9 @@ public class MainTele extends NextFTCOpMode {
 
         // LEFT STICK: Rotation Control
         // Press left stick for center rotation
-        telemetry.addLine();
-        telemetry.addLine("=== CONTROLS ===");
-        telemetry.addLine("D-Pad: Preset positions");
-        telemetry.addLine("Bumpers: Wall/Chamber");
-        telemetry.addLine("Stick Btns: Claw open/close");
-        telemetry.addLine("Face Btns: Individual testing");
 
-        telemetry.update();
+    }
+    public void onUpdate(){
+
     }
 }

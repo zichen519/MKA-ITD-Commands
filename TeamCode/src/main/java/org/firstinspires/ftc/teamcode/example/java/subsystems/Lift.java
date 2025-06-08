@@ -22,11 +22,12 @@ public class Lift extends Subsystem {
     public MotorEx leftMotor;
     public MotorEx rightMotor;
     public MotorGroup liftMotors;
-    public static double p;
-    public static double i;
-    public static double d;
-    public static int target;
-    public PIDFController controller = new PIDFController(0.000, 0.0, 0.0, new StaticFeedforward(0.5));
+    public static double p = 0.0125;
+    public static double i = 0.0;
+    public static double d = 0.00025;
+    public static double f = 0.14;
+    public static int target = 0;
+    public PIDFController controller = new PIDFController(p, i, d, v -> f);
 
 
 
@@ -78,6 +79,7 @@ public class Lift extends Subsystem {
         rightMotor.resetEncoder();
         leftMotor.resetEncoder();
         stop();
+        
         controller.setSetPointTolerance(30);
     }
 
@@ -90,9 +92,20 @@ public class Lift extends Subsystem {
         controller.setKP(p);
         controller.setKI(i);
         controller.setKD(d);
-
         liftMotors.setPower(controller.calculate(liftMotors.getCurrentPosition(), target));
+
         OpModeData.telemetry.addData("Lift Position", liftMotors.getCurrentPosition());
         OpModeData.telemetry.addData("Lift Target", target);
+        OpModeData.telemetry.addData("FConstant", f);
+        OpModeData.telemetry.addData("PConstant", controller.getKP());
+        OpModeData.telemetry.addData("IConstant", controller.getKI());
+        OpModeData.telemetry.addData("DConstant", controller.getKD());
+        OpModeData.telemetry.addLine("=== MOTOR STATUS ===");
+        OpModeData.telemetry.addData("Left Motor", "%.1f", leftMotor.getCurrentPosition());
+        OpModeData.telemetry.addData("Right Motor", "%.1f", rightMotor.getCurrentPosition());
+        OpModeData.telemetry.addData("Left Power", "%.3f", leftMotor.getPower());
+        OpModeData.telemetry.addData("Right Power", "%.3f", rightMotor.getPower());
+
+        OpModeData.telemetry.update();
     }
 }
