@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.example.java.opmodes;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.rowanmcalpin.nextftc.core.command.Command;
@@ -11,14 +12,16 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.example.java.commands.EndEffectorPositions;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Claw;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Elbow;
+import org.firstinspires.ftc.teamcode.example.java.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Rotate;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Wrist;
 
 @TeleOp(name = "MAIN")
+@Config
 public class MainTele extends NextFTCOpMode {
 
     public MainTele() {
-        super(Elbow.INSTANCE, Wrist.INSTANCE, Rotate.INSTANCE, Claw.INSTANCE);
+        super(Elbow.INSTANCE, Wrist.INSTANCE, Rotate.INSTANCE, Claw.INSTANCE, Lift.INSTANCE);
     }
     public String frontLeftName = "leftFront";
     public String frontRightName = "rightFront";
