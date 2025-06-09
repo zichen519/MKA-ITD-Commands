@@ -15,13 +15,13 @@ public class LimelightTesting extends NextFTCOpMode {
     public LimelightTesting() {
         super(Rotate.INSTANCE, Limelight.INSTANCE);
     }
-    private Limelight3A limelight;
+
     @Override
     public void onInit() {
-        limelight = hardwareMap.get(Limelight3A.class, "limelight");
+
     }
     @Override
-    public void onStartButtonPressed() {
-        Rotate.INSTANCE.setPosition((Limelight.INSTANCE.angle/255) + Rotate.INSTANCE.offset).invoke();
+    public void onUpdate() {
+        Rotate.INSTANCE.setPosition((Limelight.INSTANCE.angle/255)).invoke();
     }
 }

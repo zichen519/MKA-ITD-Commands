@@ -22,16 +22,14 @@ public class Limelight extends Subsystem {
 
     private Command getSampleAngle() {
         return new LambdaCommand()
+
                 .setUpdate(() -> {
-                    // Replace this with however you get the target pose.
-                    // If the limelight output is null set samplePose to null,
-                    // Otherwise set it to the pose
-                    // You can have many lines of code here if needed.
+
 
                     ll.start();
                     result = ll.getLatestResult();
                     if (result== null) {
-                        angle = -1;
+
                     }else{
                         double[] python = result.getPythonOutput();
 
@@ -39,8 +37,9 @@ public class Limelight extends Subsystem {
 
                         ll.pause();
                     }
-                })
-                .setIsDone(() -> angle >=0);
+                });
+
+
     }
 
 
@@ -50,8 +49,11 @@ public class Limelight extends Subsystem {
         ll = OpModeData.INSTANCE.getHardwareMap().get(Limelight3A.class, name);
     }
     public void periodic(){
-        OpModeData.telemetry.addData("Limelight Angle", angle);
+
         OpModeData.telemetry.addData("valid", result != null);
+        if(result != null){
+            OpModeData.telemetry.addData("Limelight Angle", angle);
+        }
         OpModeData.telemetry.update();
     }
 }

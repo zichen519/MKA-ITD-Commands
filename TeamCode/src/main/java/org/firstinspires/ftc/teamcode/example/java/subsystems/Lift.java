@@ -7,6 +7,7 @@ import com.rowanmcalpin.nextftc.core.Subsystem;
 import com.rowanmcalpin.nextftc.core.command.Command;
 import com.rowanmcalpin.nextftc.core.control.controllers.PIDFController;
 import com.rowanmcalpin.nextftc.ftc.OpModeData;
+import com.rowanmcalpin.nextftc.ftc.hardware.controllables.HoldPosition;
 import com.rowanmcalpin.nextftc.ftc.hardware.controllables.MotorEx;
 import com.rowanmcalpin.nextftc.ftc.hardware.controllables.MotorGroup;
 import com.rowanmcalpin.nextftc.ftc.hardware.controllables.RunToPosition;
@@ -27,7 +28,7 @@ public class Lift extends Subsystem {
     public static double d = 0.00025;
     public static double f = 0.14;
     public static int target = 0;
-    public PIDFController controller = new PIDFController(p, i, d, v -> f);
+    public PIDFController controller = new PIDFController(p, i, d, v -> f,30);
 
 
 
@@ -54,6 +55,8 @@ public class Lift extends Subsystem {
     }
 
     public Command toHighBasket() {
+        OpModeData.telemetry.addLine("toHighBasket() called!"); // Debug line
+        OpModeData.telemetry.update();
         return new RunToPosition(liftMotors, // MOTOR TO MOVE
                 500.0, // TARGET POSITION, IN TICKS
                 controller, // CONTROLLER TO IMPLEMENT
@@ -66,7 +69,16 @@ public class Lift extends Subsystem {
                 controller, // CONTROLLER TO IMPLEMENT
                 this); // IMPLEMENTED SUBSYSTEM
     }
-    
+
+    public Command setTarget(int newTarget) {
+
+        return new RunToPosition(liftMotors, (double)newTarget, controller, this);
+    }
+    @Override
+    public Command getDefaultCommand(){
+        return new HoldPosition(liftMotors,controller,this);
+    }
+
     @Override
     public void initialize() {
         leftMotor = new MotorEx(leftMotorName);
@@ -80,7 +92,7 @@ public class Lift extends Subsystem {
         leftMotor.resetEncoder();
         stop();
         
-        controller.setSetPointTolerance(30);
+
     }
 
     public void stop() {
@@ -89,11 +101,13 @@ public class Lift extends Subsystem {
 
     public void periodic() {
         // This method can be used for periodic updates if needed
+        /*
         controller.setKP(p);
         controller.setKI(i);
         controller.setKD(d);
         liftMotors.setPower(controller.calculate(liftMotors.getCurrentPosition(), target));
-
+        */
+        /*
         OpModeData.telemetry.addData("Lift Position", liftMotors.getCurrentPosition());
         OpModeData.telemetry.addData("Lift Target", target);
         OpModeData.telemetry.addData("FConstant", f);
@@ -107,5 +121,7 @@ public class Lift extends Subsystem {
         OpModeData.telemetry.addData("Right Power", "%.3f", rightMotor.getPower());
 
         OpModeData.telemetry.update();
+
+         */
     }
 }
