@@ -27,20 +27,20 @@ public class Lift extends Subsystem {
     public static double i = 0.0;
     public static double d = 0.00025;
     public static double f = 0.14;
-    public static int target = 0;
-    public PIDFController controller = new PIDFController(p, i, d, v -> f,30);
+    //public static int target = 0;
+    public PIDFController controller = new PIDFController(0.0125, 0.0, 0.00025, v -> f,30);
 
 
 
 
     public String leftMotorName = "slide1";
     public String rightMotorName = "slide2";
-    /*
+
     public Command manualControl(float power) {
         return new SetPower(liftMotors, (double)power, this);
     }
 
-     */
+
     public Command retract() {
         return new RunToPosition(liftMotors, // MOTOR TO MOVE
                 0.0, // TARGET POSITION, IN TICKS
@@ -58,7 +58,7 @@ public class Lift extends Subsystem {
         OpModeData.telemetry.addLine("toHighBasket() called!"); // Debug line
         OpModeData.telemetry.update();
         return new RunToPosition(liftMotors, // MOTOR TO MOVE
-                500.0, // TARGET POSITION, IN TICKS
+                750.0, // TARGET POSITION, IN TICKS
                 controller, // CONTROLLER TO IMPLEMENT
                 this); // IMPLEMENTED SUBSYSTEM
     }
@@ -88,16 +88,13 @@ public class Lift extends Subsystem {
         leftMotor.resetEncoder();
         rightMotor.resetEncoder();
         liftMotors = new MotorGroup(leftMotor, rightMotor);
-        rightMotor.resetEncoder();
-        leftMotor.resetEncoder();
-        stop();
+
+
         
 
     }
 
-    public void stop() {
-        liftMotors.setPower(0);
-    }
+
 
     public void periodic() {
         // This method can be used for periodic updates if needed
@@ -107,8 +104,10 @@ public class Lift extends Subsystem {
         controller.setKD(d);
         liftMotors.setPower(controller.calculate(liftMotors.getCurrentPosition(), target));
         */
-        /*
+
         OpModeData.telemetry.addData("Lift Position", liftMotors.getCurrentPosition());
+        OpModeData.telemetry.update();
+        /*
         OpModeData.telemetry.addData("Lift Target", target);
         OpModeData.telemetry.addData("FConstant", f);
         OpModeData.telemetry.addData("PConstant", controller.getKP());

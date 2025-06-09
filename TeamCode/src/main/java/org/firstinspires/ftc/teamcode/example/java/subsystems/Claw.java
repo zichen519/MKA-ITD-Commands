@@ -16,11 +16,11 @@ public class Claw extends Subsystem {
     public String clawName = "grab";
 
     public Command open() {
-        return new ServoToPosition(grab, 0.95, this);
+        return new ServoToPosition(grab, 1, this);
     }
 
     public Command close() {
-        return new ServoToPosition(grab, 0.5, this);
+        return new ServoToPosition(grab, 0.47, this);
     }
 
     public Command setPosition(double position) {

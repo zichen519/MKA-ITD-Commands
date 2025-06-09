@@ -20,6 +20,12 @@ public class LimelightTesting extends NextFTCOpMode {
     public void onInit() {
 
     }
+
+    @Override
+    public void onStartButtonPressed() {
+
+    }
+
     @Override
     public void onUpdate() {
         Rotate.INSTANCE.setPosition((Limelight.INSTANCE.angle/255)).invoke();

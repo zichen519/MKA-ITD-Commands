@@ -6,6 +6,8 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.rowanmcalpin.nextftc.core.command.Command;
+import com.rowanmcalpin.nextftc.core.command.groups.ParallelGroup;
+import com.rowanmcalpin.nextftc.core.command.groups.SequentialGroup;
 import com.rowanmcalpin.nextftc.ftc.NextFTCOpMode;
 import com.rowanmcalpin.nextftc.ftc.OpModeData;
 import com.rowanmcalpin.nextftc.ftc.driving.MecanumDriverControlled;
@@ -55,10 +57,10 @@ public class MainTele extends NextFTCOpMode {
         backLeftMotor = new MotorEx(backLeftName);
         backRightMotor = new MotorEx(backRightName);
         frontRightMotor = new MotorEx(frontRightName);
-        frontLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         motors = new MotorEx[] {frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor};
 
@@ -76,15 +78,29 @@ public class MainTele extends NextFTCOpMode {
 
 
         gamepadManager.getGamepad2().getDpadUp().setPressedCommand(
-                () -> EndEffectorPositions.basketScore()
+                () -> new SequentialGroup(
+                        Linkage.INSTANCE.linkageUp(),
+                        Lift.INSTANCE.toHighBasket(),
+                        EndEffectorPositions.basketScore()
+                )
         );
 
         gamepadManager.getGamepad2().getDpadDown().setPressedCommand(
-                () -> EndEffectorPositions.hoverAboveFloor()
+                () -> new SequentialGroup(
+                        Lift.INSTANCE.retract(),
+                        Linkage.INSTANCE.linkageDown(),
+                        EndEffectorPositions.hoverAboveFloor()
+                )
+
         );
 
         gamepadManager.getGamepad2().getRightBumper().setPressedCommand(
-                () -> EndEffectorPositions.grabFromWall()
+                () -> new SequentialGroup(
+                        Lift.INSTANCE.retract(),
+                        Linkage.INSTANCE.linkageUp(),
+                        EndEffectorPositions.grabFromWall()
+                )
+
         );
 
         gamepadManager.getGamepad2().getDpadRight().setPressedCommand(
@@ -93,7 +109,11 @@ public class MainTele extends NextFTCOpMode {
 
         // TRIGGERS: Chamber Operations
         gamepadManager.getGamepad2().getDpadLeft().setPressedCommand(
-                () -> EndEffectorPositions.preChamberScore()
+                () -> new SequentialGroup(
+                        Lift.INSTANCE.retract(),
+                        Linkage.INSTANCE.linkageUp(),
+                        EndEffectorPositions.preChamberScore()
+                )
         );
 
         gamepadManager.getGamepad2().getLeftBumper().setPressedCommand(
@@ -108,8 +128,12 @@ public class MainTele extends NextFTCOpMode {
         gamepadManager.getGamepad2().getRightStick().getButton().setPressedCommand(
                 () -> Claw.INSTANCE.close()
         );
-        gamepadManager.getGamepad2().getCircle().setPressedCommand(
-                () -> Lift.INSTANCE.toHighBasket()
+        gamepadManager.getGamepad2().getRightTrigger().setHeldCommand(
+                value -> Lift.INSTANCE.manualControl(value)
+        );
+
+        gamepadManager.getGamepad2().getLeftTrigger().setHeldCommand(
+                value -> Lift.INSTANCE.manualControl(-value)
         );
 
 

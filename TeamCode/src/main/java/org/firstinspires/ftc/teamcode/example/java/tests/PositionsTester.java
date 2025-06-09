@@ -6,10 +6,12 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.rowanmcalpin.nextftc.core.command.groups.ParallelGroup;
 import com.rowanmcalpin.nextftc.core.control.controllers.PIDFController;
 import com.rowanmcalpin.nextftc.core.control.controllers.feedforward.StaticFeedforward;
 import com.rowanmcalpin.nextftc.ftc.NextFTCOpMode;
 import com.rowanmcalpin.nextftc.ftc.OpModeData;
+import com.rowanmcalpin.nextftc.ftc.gamepad.GamepadManager;
 import com.rowanmcalpin.nextftc.ftc.hardware.controllables.MotorEx;
 
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Claw;
@@ -20,7 +22,7 @@ import org.firstinspires.ftc.teamcode.example.java.subsystems.Linkage;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Rotate;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Wrist;
 
-@TeleOp(name = "Linkage Tuning")
+@TeleOp
 @Config
 public class PositionsTester extends NextFTCOpMode {
 
@@ -31,8 +33,8 @@ public class PositionsTester extends NextFTCOpMode {
                 Rotate.INSTANCE,
                 Claw.INSTANCE,
                 Lift.INSTANCE,
-                Linkage.INSTANCE,
-                Limelight.INSTANCE
+                Linkage.INSTANCE
+
         );
     }
 
@@ -59,12 +61,17 @@ public class PositionsTester extends NextFTCOpMode {
     }
     @Override
     public void onStartButtonPressed(){
-        Linkage.INSTANCE.setTarget(linkageTarget).invoke();
-        Lift.INSTANCE.toHighBasket().invoke();
-        Elbow.INSTANCE.setPosition(elbow).invoke();
-        Wrist.INSTANCE.setPosition(wrist).invoke();
-        Rotate.INSTANCE.setPosition(rotate).invoke();
-        Claw.INSTANCE.setPosition(claw).invoke();
+        gamepadManager.getGamepad2().getCircle().setPressedCommand(
+
+                () -> new ParallelGroup(
+                        Linkage.INSTANCE.setTarget(linkageTarget),
+                        Lift.INSTANCE.setTarget(liftTarget),
+                        Elbow.INSTANCE.setPosition(elbow),
+                        Wrist.INSTANCE.setPosition(wrist),
+                        Rotate.INSTANCE.setPosition(rotate),
+                        Claw.INSTANCE.setPosition(claw)
+                )
+        );
     }
 
 

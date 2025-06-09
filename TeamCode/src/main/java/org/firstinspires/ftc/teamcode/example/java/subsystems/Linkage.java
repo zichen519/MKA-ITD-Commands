@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.example.java.subsystems;
 import android.graphics.Path;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.rowanmcalpin.nextftc.core.Subsystem;
 import com.rowanmcalpin.nextftc.core.command.Command;
@@ -15,6 +16,7 @@ import com.rowanmcalpin.nextftc.ftc.hardware.controllables.RunToPosition;
 import com.rowanmcalpin.nextftc.core.control.controllers.feedforward.ArmFeedforward;
 
 @Config
+
 public class Linkage extends Subsystem {
     // BOILERPLATE
     public static final Linkage INSTANCE = new Linkage();
@@ -39,7 +41,7 @@ public class Linkage extends Subsystem {
 
     // Arm feedforward (better for pivoting mechanisms than static feedforward)
     ;
-    public PIDFController controller = new PIDFController(p, i,d, v -> calculateFeedforward(), 30);
+    public PIDFController controller = new PIDFController(0.006, 0.0,0.0002, v -> calculateFeedforward(), 30);
 
     // Motor configuration
     public String motorName = "lift";
@@ -89,20 +91,23 @@ public class Linkage extends Subsystem {
         linkageMotor.setPower(controller.calculate(linkageMotor.getCurrentPosition(),target));
         // Update arm feedforward from dashboard
         */
+
         double currentAngle = linkageMotor.getCurrentPosition() / (ticksPerRevolution * gearRatio) * 360;
         double targetAngle = target / (ticksPerRevolution * gearRatio) * 360;
         // Telemetry
 
-        OpModeData.telemetry.addData("Current Position", "%.1f ticks", linkageMotor.getCurrentPosition());
-        OpModeData.telemetry.addData("Target Position", "%d ticks", target);
+        OpModeData.telemetry.addData("Linkage Current Position", "%.1f ticks", linkageMotor.getCurrentPosition());
+        //OpModeData.telemetry.addData("Target Position", "%d ticks", target);
         OpModeData.telemetry.addData("Current Angle", "%.1f°", currentAngle);
         OpModeData.telemetry.addData("Target Angle", "%.1f°", targetAngle);
-        OpModeData.telemetry.addData("Motor Power", "%.3f", linkageMotor.getPower());
+        OpModeData.telemetry.addData("Linkage Motor Power", "%.3f", linkageMotor.getPower());
 
 
         //OpModeData.telemetry.addData("PID Values", "P:%.3f I:%.3f D:%.3f", p, i, d);
         OpModeData.telemetry.update();
         // Position status
+
+
 
     }
 }
