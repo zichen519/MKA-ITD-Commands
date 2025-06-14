@@ -7,6 +7,7 @@ import com.rowanmcalpin.nextftc.core.command.utility.delays.Delay;
 
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Claw;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Elbow;
+import org.firstinspires.ftc.teamcode.example.java.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Rotate;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Wrist;
 
@@ -15,7 +16,7 @@ public class EndEffectorPositions {
     // Preset position commands using multiple subsystems
     public static Command basketScore() {
         return new ParallelGroup(
-                Elbow.INSTANCE.setPosition(0.525),     // Elbow up for basket height
+                Elbow.INSTANCE.setPosition(0.65),     // Elbow up for basket height
                 Wrist.INSTANCE.setPosition(0.2),     // Wrist angled for basket
                 Rotate.INSTANCE.setPosition(0.52)   // Neutral rotation
         );
@@ -23,9 +24,22 @@ public class EndEffectorPositions {
 
     public static Command grabFromWall() {
         return new ParallelGroup(
-                Elbow.INSTANCE.setPosition(0.99),     // Elbow positioned for wall height
-                Wrist.INSTANCE.setPosition(0.73),     // Wrist angled for wall grab
+                Elbow.INSTANCE.setPosition(0.03),     // Elbow positioned for wall height
+                Wrist.INSTANCE.setPosition(0.18),     // Wrist angled for wall grab
                 Rotate.INSTANCE.setPosition(0.23)   // Neutral rotation
+        );
+    }
+
+    public static Command ramScore(){
+        return new SequentialGroup(
+                Wrist.INSTANCE.setPosition(0),
+                new Delay(0.5),
+                new ParallelGroup(
+                        Wrist.INSTANCE.setPosition(.75),
+                        Elbow.INSTANCE.setPosition(.8),
+                        Rotate.INSTANCE.setPosition(.8)
+                ),
+                Lift.INSTANCE.toHighChamber()
         );
     }
 
@@ -50,7 +64,7 @@ public class EndEffectorPositions {
 
     public static Command hoverAboveFloor() {
         return new ParallelGroup(
-                Elbow.INSTANCE.setPosition(0.6),     // Elbow low but not touching floor
+                Elbow.INSTANCE.setPosition(0.7),     // Elbow low but not touching floor
                 Wrist.INSTANCE.setPosition(1),
                 Claw.INSTANCE.open()// Wrist angled down toward floor
 
@@ -62,13 +76,13 @@ public class EndEffectorPositions {
                 Claw.INSTANCE.open(),
                 new Delay(0.2), // Wait for claw to open
                 new ParallelGroup(
-                        Elbow.INSTANCE.setPosition(0.48),     // Elbow fully down to floor level
+                        Elbow.INSTANCE.setPosition(0.58),     // Elbow fully down to floor level
                         Wrist.INSTANCE.setPosition(1)
                 ),
                 new Delay(0.2), // Wait for elbow to settle
                 Claw.INSTANCE.close(),
                 new Delay(0.2),
-                Elbow.INSTANCE.setPosition(0.6)
+                Elbow.INSTANCE.setPosition(0.7)
         );
 
     }

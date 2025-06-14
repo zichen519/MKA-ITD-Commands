@@ -3,6 +3,7 @@ repositories {
     google() // Needed for androidx
     maven { url = "https://maven.rowanmcalpin.com/" }
     maven { url = "https://maven.brott.dev/" } // Remove if you don't intend to use the FTC Dashboard
+    maven { url= 'https://maven.pedropathing.com/' }
 }
 
 dependencies {
@@ -19,6 +20,7 @@ dependencies {
     implementation 'com.rowanmcalpin.nextftc:core:0.6.1'
     implementation 'com.rowanmcalpin.nextftc:ftc:0.6.1'
     implementation 'com.acmerobotics.dashboard:dashboard:0.4.16' // Remove if you don't intend to use the FTC Dashboard
+    implementation 'com.pedropathing:pedro:1.0.9'
 
 }
 

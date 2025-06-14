@@ -55,17 +55,17 @@ public class Lift extends Subsystem {
     }
 
     public Command toHighBasket() {
-        OpModeData.telemetry.addLine("toHighBasket() called!"); // Debug line
+        //OpModeData.telemetry.addLine("toHighBasket() called!"); // Debug line
         OpModeData.telemetry.update();
         return new RunToPosition(liftMotors, // MOTOR TO MOVE
-                750.0, // TARGET POSITION, IN TICKS
+                900, // TARGET POSITION, IN TICKS
                 controller, // CONTROLLER TO IMPLEMENT
                 this); // IMPLEMENTED SUBSYSTEM
     }
 
     public Command toHighChamber() {
         return new RunToPosition(liftMotors, // MOTOR TO MOVE
-                1200.0, // TARGET POSITION, IN TICKS
+                600, // TARGET POSITION, IN TICKS
                 controller, // CONTROLLER TO IMPLEMENT
                 this); // IMPLEMENTED SUBSYSTEM
     }

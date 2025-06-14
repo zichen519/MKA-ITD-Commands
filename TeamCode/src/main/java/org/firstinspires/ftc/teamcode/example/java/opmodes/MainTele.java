@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.example.java.opmodes;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.rowanmcalpin.nextftc.core.command.Command;
@@ -49,6 +51,8 @@ public class MainTele extends NextFTCOpMode {
     public MotorEx[] motors;
     public Command driverControlled;
 
+    private Limelight3A limelight;
+
     @Override
     public void onInit() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -64,6 +68,10 @@ public class MainTele extends NextFTCOpMode {
 
         motors = new MotorEx[] {frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor};
 
+        limelight = hardwareMap.get(Limelight3A.class, "limelight");
+        limelight.setPollRateHz(10);
+        limelight.pipelineSwitch(0);
+
         telemetry.addLine("Initialized");
         telemetry.update();
     }
@@ -73,7 +81,7 @@ public class MainTele extends NextFTCOpMode {
         driverControlled = new MecanumDriverControlled(motors, gamepadManager.getGamepad1().getLeftStick(),
                 gamepadManager.getGamepad1().getRightStick());
         driverControlled.invoke();
-
+        limelight.start();
 
 
 
@@ -136,6 +144,9 @@ public class MainTele extends NextFTCOpMode {
                 value -> Lift.INSTANCE.manualControl(-value)
         );
 
+        gamepadManager.getGamepad2().getCross().setPressedCommand(
+                () -> EndEffectorPositions.ramScore()
+        );
 
 
         // LEFT STICK: Rotation Control
@@ -143,6 +154,13 @@ public class MainTele extends NextFTCOpMode {
 
     }
     public void onUpdate(){
+        LLResult result = limelight.getLatestResult();
+        if (result != null && gamepad2.circle) {
 
+            double[] outputs = result.getPythonOutput();
+
+            Rotate.INSTANCE.setPosition((outputs[5]/255)+0.2).invoke();
+
+        }
     }
 }
