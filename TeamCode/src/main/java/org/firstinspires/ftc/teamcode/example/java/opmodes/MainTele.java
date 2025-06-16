@@ -78,8 +78,8 @@ public class MainTele extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed() {
         // Start driver-controlled driving
-        driverControlled = new MecanumDriverControlled(motors, gamepadManager.getGamepad1().getLeftStick(),
-                gamepadManager.getGamepad1().getRightStick());
+        driverControlled = new MecanumDriverControlled(motors, gamepadManager.getGamepad1().getRightStick(),
+                gamepadManager.getGamepad1().getLeftStick());
         driverControlled.invoke();
         limelight.start();
 
