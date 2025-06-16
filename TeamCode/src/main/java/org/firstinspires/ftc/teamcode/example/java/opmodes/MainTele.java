@@ -87,17 +87,23 @@ public class MainTele extends NextFTCOpMode {
 
         gamepadManager.getGamepad2().getDpadUp().setPressedCommand(
                 () -> new SequentialGroup(
-                        Linkage.INSTANCE.linkageUp(),
-                        Lift.INSTANCE.toHighBasket(),
-                        EndEffectorPositions.basketScore()
+                        new ParallelGroup(
+                                Linkage.INSTANCE.linkageUp(),
+                                EndEffectorPositions.basketScore()
+                        ),
+                        Lift.INSTANCE.toHighBasket()
+
                 )
         );
 
         gamepadManager.getGamepad2().getDpadDown().setPressedCommand(
                 () -> new SequentialGroup(
                         Lift.INSTANCE.retract(),
-                        Linkage.INSTANCE.linkageDown(),
-                        EndEffectorPositions.hoverAboveFloor()
+                        new ParallelGroup(
+                                Linkage.INSTANCE.linkageDown(),
+                                EndEffectorPositions.hoverAboveFloor()
+                        )
+
                 )
 
         );
@@ -119,8 +125,11 @@ public class MainTele extends NextFTCOpMode {
         gamepadManager.getGamepad2().getDpadLeft().setPressedCommand(
                 () -> new SequentialGroup(
                         Lift.INSTANCE.retract(),
-                        Linkage.INSTANCE.linkageUp(),
-                        EndEffectorPositions.preChamberScore()
+                        new ParallelGroup(
+                                Linkage.INSTANCE.linkageUp(),
+                                EndEffectorPositions.preChamberScore()
+                        )
+
                 )
         );
 

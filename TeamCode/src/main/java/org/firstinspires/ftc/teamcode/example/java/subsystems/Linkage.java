@@ -36,12 +36,12 @@ public class Linkage extends Subsystem {
     public static int target = 0;
 
     private double calculateFeedforward() {
-        return Math.cos(Math.toRadians(target / ((ticksPerRevolution * gearRatio)/360))) * 0.045;
+        return Math.cos(Math.toRadians(target / ((ticksPerRevolution * gearRatio)/360))) * 0.08;
     }
 
     // Arm feedforward (better for pivoting mechanisms than static feedforward)
     ;
-    public PIDFController controller = new PIDFController(0.006, 0.0,0.0002, v -> calculateFeedforward(), 30);
+    public PIDFController controller = new PIDFController(0.006, 0.0,0.00035, v -> calculateFeedforward(), 30);
 
     // Motor configuration
     public String motorName = "lift";

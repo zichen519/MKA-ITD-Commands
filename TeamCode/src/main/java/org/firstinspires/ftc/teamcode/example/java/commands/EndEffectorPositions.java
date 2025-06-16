@@ -22,6 +22,10 @@ public class EndEffectorPositions {
         );
     }
 
+    public static Command avoidBasket(){
+        return Elbow.INSTANCE.setPosition(.5);
+    }
+
     public static Command grabFromWall() {
         return new ParallelGroup(
                 Elbow.INSTANCE.setPosition(0.03),     // Elbow positioned for wall height
