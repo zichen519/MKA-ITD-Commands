@@ -106,7 +106,7 @@ public class Lift extends Subsystem {
         */
 
         OpModeData.telemetry.addData("Lift Position", liftMotors.getCurrentPosition());
-        OpModeData.telemetry.update();
+
         /*
         OpModeData.telemetry.addData("Lift Target", target);
         OpModeData.telemetry.addData("FConstant", f);

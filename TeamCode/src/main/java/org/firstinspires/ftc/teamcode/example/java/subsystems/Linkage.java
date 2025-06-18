@@ -53,12 +53,12 @@ public class Linkage extends Subsystem {
 
 
     public Command linkageUp() {
-        return new RunToPosition(linkageMotor, (double)-50, controller, this);
+        return new RunToPosition(linkageMotor, (double)-10, controller, this);
     }
 
     public Command linkageDown() {
 
-        return new RunToPosition(linkageMotor, (double)-1650, controller, this);
+        return new RunToPosition(linkageMotor, (double)-1680, controller, this);
     }
 
 
@@ -104,7 +104,7 @@ public class Linkage extends Subsystem {
 
 
         //OpModeData.telemetry.addData("PID Values", "P:%.3f I:%.3f D:%.3f", p, i, d);
-        OpModeData.telemetry.update();
+
         // Position status
 
 

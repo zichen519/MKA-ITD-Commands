@@ -49,7 +49,7 @@ public class SampleAuto extends PedroOpMode {
     private final Pose scorePose = new Pose(17.5,121, Math.toRadians(-45));
     private final Pose pickup1Pose = new Pose(25.5,115.25,Math.toRadians(0));
     private final Pose pickup2Pose = new Pose(25.5, 124.5, Math.toRadians(0));
-    private final Pose pickup3Pose = new Pose(28, 118.5, Math.toRadians(45));
+    private final Pose pickup3Pose = new Pose(28, 119.5, Math.toRadians(45));
     private final Pose pickupSubPose = new Pose(66.5, 88, Math.toRadians(-90));
 
     private PathChain scorePreload, grab1, grab2, grab3, grabSub, score1, score2, score3, score4;
@@ -81,6 +81,7 @@ public class SampleAuto extends PedroOpMode {
                         Lift.INSTANCE.toHighBasket(),
                         EndEffectorPositions.basketScore()
                 ),
+                new Delay(0.3),
                 Claw.INSTANCE.open(),
                 new Delay(.4),
                 EndEffectorPositions.avoidBasket(),
