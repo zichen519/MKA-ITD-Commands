@@ -42,7 +42,7 @@ public class LinkageTuning extends NextFTCOpMode {
 
     // Custom feedforward calculation
     private double calculateFeedforward() {
-        return Math.cos(Math.toRadians(target / ((ticksPerRevolution * gearRatio)/360))) * f;
+        return Math.cos(Math.toRadians(target / ((ticksPerRevolution * gearRatio)/360))) * 0.08;
     }
     public PIDFController controller = new PIDFController(p, i, d, v -> calculateFeedforward());
     @Override

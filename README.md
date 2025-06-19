@@ -1,6 +1,11 @@
 # Welcome
 Welcome to the NextFTC Quickstart! It has NextFTC & PedroPathing integration built in.
 
+adb kill-server
+adb start-server
+adb tcpip 5555
+adb connect 192.168.43.1:5555
+
 (For PedroPathing, use the `nextftc-and-pedro` branch).
 
 ---

@@ -68,11 +68,11 @@ public class MainTele extends NextFTCOpMode {
 
         motors = new MotorEx[] {frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor};
 
+        gamepadManager.getGamepad1().getLeftStick().setProfileCurve(x -> (float) (0.5*x));
+
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         limelight.setPollRateHz(10);
         limelight.pipelineSwitch(0);
-
-        gamepadManager.getGamepad1().getLeftStick().setProfileCurve(x -> (float) (0.5*x));
 
         telemetry.addLine("Initialized");
         telemetry.update();
@@ -113,8 +113,11 @@ public class MainTele extends NextFTCOpMode {
         gamepadManager.getGamepad2().getRightBumper().setPressedCommand(
                 () -> new SequentialGroup(
                         Lift.INSTANCE.retract(),
-                        Linkage.INSTANCE.linkageUp(),
-                        EndEffectorPositions.grabFromWall()
+                        new ParallelGroup(
+                                Linkage.INSTANCE.linkageUp(),
+                                EndEffectorPositions.grabFromWall()
+                        )
+
                 )
 
         );
@@ -136,7 +139,10 @@ public class MainTele extends NextFTCOpMode {
         );
 
         gamepadManager.getGamepad2().getLeftBumper().setPressedCommand(
-                () -> EndEffectorPositions.ramScore()
+                () -> new SequentialGroup(
+                        Lift.INSTANCE.retract(),
+                        EndEffectorPositions.ramScore()
+                )
         );
 
 
@@ -171,5 +177,6 @@ public class MainTele extends NextFTCOpMode {
             Rotate.INSTANCE.setPosition((outputs[5]/255)+0.2).invoke();
 
         }
+        telemetry.update();
     }
 }

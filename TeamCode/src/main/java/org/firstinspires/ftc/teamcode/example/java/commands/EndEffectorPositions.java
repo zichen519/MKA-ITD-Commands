@@ -24,12 +24,12 @@ public class EndEffectorPositions {
     }
 
     public static Command avoidBasket(){
-        return Elbow.INSTANCE.setPosition(.45);
+        return Elbow.INSTANCE.setPosition(.42);
     }
 
     public static Command grabFromWall() {
         return new ParallelGroup(
-                Elbow.INSTANCE.setPosition(1),     // Elbow positioned for wall height
+                Elbow.INSTANCE.setPosition(0.99),     // Elbow positioned for wall height
                 Wrist.INSTANCE.setPosition(0.65),     // Wrist angled for wall grab
                 Rotate.INSTANCE.setPosition(0.8)   // Neutral rotation
         );
@@ -40,10 +40,10 @@ public class EndEffectorPositions {
                 Wrist.INSTANCE.setPosition(1),
                 new Delay(0.5),
                 new ParallelGroup(
-                        Linkage.INSTANCE.setTarget(-870),
                         Wrist.INSTANCE.setPosition(.25),
                         Elbow.INSTANCE.setPosition(.45),
-                        Rotate.INSTANCE.setPosition(.23)
+                        Rotate.INSTANCE.setPosition(.23),
+                        Linkage.INSTANCE.setTarget(-850)
                 )
 
         );
@@ -70,8 +70,8 @@ public class EndEffectorPositions {
 
     public static Command hoverAboveFloor() {
         return new ParallelGroup(
-                Elbow.INSTANCE.setPosition(0.55),     // Elbow low but not touching floor
-                Wrist.INSTANCE.setPosition(1),
+                Elbow.INSTANCE.setPosition(0.575),     // Elbow low but not touching floor
+                Wrist.INSTANCE.setPosition(.85),
                 Claw.INSTANCE.open()// Wrist angled down toward floor
 
         );
@@ -82,13 +82,13 @@ public class EndEffectorPositions {
                 Claw.INSTANCE.open(),
                 new Delay(0.2), // Wait for claw to open
                 new ParallelGroup(
-                        Elbow.INSTANCE.setPosition(0.42),     // Elbow fully down to floor level
-                        Wrist.INSTANCE.setPosition(.94)
+                        Elbow.INSTANCE.setPosition(0.45),     // Elbow fully down to floor level
+                        Wrist.INSTANCE.setPosition(.85)
                 ),
                 new Delay(0.2), // Wait for elbow to settle
                 Claw.INSTANCE.close(),
                 new Delay(0.2),
-                Elbow.INSTANCE.setPosition(0.55)
+                Elbow.INSTANCE.setPosition(0.575)
         );
 
     }
