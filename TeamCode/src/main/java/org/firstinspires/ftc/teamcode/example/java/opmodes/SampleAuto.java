@@ -45,11 +45,11 @@ public class SampleAuto extends PedroOpMode {
 
     public static double pickupX;
     public static double pickupY;
-    private final Pose startPose = new Pose(6.500, 84, Math.toRadians(0.0));
+    private final Pose startPose = new Pose(6.500, 107.5, Math.toRadians(0.0));
     private final Pose scorePose = new Pose(17.5,121, Math.toRadians(-45));
     private final Pose pickup1Pose = new Pose(25.5,115.25,Math.toRadians(0));
     private final Pose pickup2Pose = new Pose(25.5, 124.5, Math.toRadians(0));
-    private final Pose pickup3Pose = new Pose(28, 118.5, Math.toRadians(45));
+    private final Pose pickup3Pose = new Pose(28, 119.5, Math.toRadians(45));
     private final Pose pickupSubPose = new Pose(66.5, 88, Math.toRadians(-90));
 
     private PathChain scorePreload, grab1, grab2, grab3, grabSub, score1, score2, score3, score4;
@@ -57,7 +57,8 @@ public class SampleAuto extends PedroOpMode {
     public void buildPaths(){
 
         scorePreload = follower.pathBuilder().addPath(new BezierLine(new Point(startPose), new Point(scorePose)))
-                .setLinearHeadingInterpolation(startPose.getHeading(),scorePose.getHeading()).build();
+                .setLinearHeadingInterpolation(startPose.getHeading(),scorePose.getHeading())
+                .build();
 
         grab1 = follower.pathBuilder().addPath(new BezierLine(new Point(scorePose), new Point(pickup1Pose)))
                 .setLinearHeadingInterpolation(scorePose.getHeading(),pickup1Pose.getHeading()).build();
@@ -68,20 +69,32 @@ public class SampleAuto extends PedroOpMode {
         score2 = follower.pathBuilder().addPath(new BezierLine(new Point(pickup2Pose), new Point(scorePose)))
                 .setLinearHeadingInterpolation(pickup2Pose.getHeading(),scorePose.getHeading()).build();
         grab3 = follower.pathBuilder().addPath(new BezierLine(new Point(scorePose), new Point(pickup3Pose)))
-                .setLinearHeadingInterpolation(scorePose.getHeading(),pickup3Pose.getHeading()).build();
+                .setLinearHeadingInterpolation(scorePose.getHeading(),pickup3Pose.getHeading()).setPathEndTimeoutConstraint(100)
+                .build();
         score3 = follower.pathBuilder().addPath(new BezierLine(new Point(pickup3Pose), new Point(scorePose)))
                 .setLinearHeadingInterpolation(pickup3Pose.getHeading(),scorePose.getHeading()).build();
     }
 
     public Command firstRoutine(){
+
         return new SequentialGroup(
+
                 //score preload
                 new ParallelGroup(
                         new FollowPath(scorePreload, true, 0.8),
                         Lift.INSTANCE.toHighBasket(),
-                        EndEffectorPositions.basketScore()
+                        EndEffectorPositions.avoidBasket()
                 ),
-                Claw.INSTANCE.open(),
+                new ParallelGroup(
+                        EndEffectorPositions.basketScore(),
+                        new SequentialGroup(
+                                new Delay(0.4),
+                                Claw.INSTANCE.open()
+
+                        )
+
+                ),
+
                 new Delay(.4),
                 EndEffectorPositions.avoidBasket(),
                 new Delay(.4),
@@ -96,6 +109,7 @@ public class SampleAuto extends PedroOpMode {
                         Rotate.INSTANCE.setPosition(0.23)
 
                 ),
+
                 new FollowPath(grab1,true, 0.8),
                 new Delay(0.4),
                 EndEffectorPositions.grabFromFloor(),
@@ -112,7 +126,7 @@ public class SampleAuto extends PedroOpMode {
                 new ParallelGroup(
                         EndEffectorPositions.basketScore(),
                         new SequentialGroup(
-                                new Delay(0.3),
+                                new Delay(0.4),
                                 Claw.INSTANCE.open()
 
                         )
@@ -146,7 +160,7 @@ public class SampleAuto extends PedroOpMode {
                 new ParallelGroup(
                         EndEffectorPositions.basketScore(),
                         new SequentialGroup(
-                                new Delay(0.3),
+                                new Delay(0.4),
                                 Claw.INSTANCE.open()
 
                         )
@@ -180,7 +194,7 @@ public class SampleAuto extends PedroOpMode {
                 new ParallelGroup(
                         EndEffectorPositions.basketScore(),
                         new SequentialGroup(
-                                new Delay(0.3),
+                                new Delay(0.4),
                                 Claw.INSTANCE.open()
 
                         )

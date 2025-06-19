@@ -8,6 +8,7 @@ import com.rowanmcalpin.nextftc.core.command.utility.delays.Delay;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Claw;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Elbow;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Lift;
+import org.firstinspires.ftc.teamcode.example.java.subsystems.Linkage;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Rotate;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Wrist;
 
@@ -16,34 +17,35 @@ public class EndEffectorPositions {
     // Preset position commands using multiple subsystems
     public static Command basketScore() {
         return new ParallelGroup(
-                Elbow.INSTANCE.setPosition(0.65),     // Elbow up for basket height
+                Elbow.INSTANCE.setPosition(0.55),     // Elbow up for basket height
                 Wrist.INSTANCE.setPosition(0.2),     // Wrist angled for basket
                 Rotate.INSTANCE.setPosition(0.52)   // Neutral rotation
         );
     }
 
     public static Command avoidBasket(){
-        return Elbow.INSTANCE.setPosition(.5);
+        return Elbow.INSTANCE.setPosition(.45);
     }
 
     public static Command grabFromWall() {
         return new ParallelGroup(
-                Elbow.INSTANCE.setPosition(0.03),     // Elbow positioned for wall height
-                Wrist.INSTANCE.setPosition(0.18),     // Wrist angled for wall grab
-                Rotate.INSTANCE.setPosition(0.23)   // Neutral rotation
+                Elbow.INSTANCE.setPosition(1),     // Elbow positioned for wall height
+                Wrist.INSTANCE.setPosition(0.65),     // Wrist angled for wall grab
+                Rotate.INSTANCE.setPosition(0.8)   // Neutral rotation
         );
     }
 
     public static Command ramScore(){
         return new SequentialGroup(
-                Wrist.INSTANCE.setPosition(0),
+                Wrist.INSTANCE.setPosition(1),
                 new Delay(0.5),
                 new ParallelGroup(
-                        Wrist.INSTANCE.setPosition(.75),
-                        Elbow.INSTANCE.setPosition(.8),
-                        Rotate.INSTANCE.setPosition(.8)
-                ),
-                Lift.INSTANCE.toHighChamber()
+                        Linkage.INSTANCE.setTarget(-870),
+                        Wrist.INSTANCE.setPosition(.25),
+                        Elbow.INSTANCE.setPosition(.45),
+                        Rotate.INSTANCE.setPosition(.23)
+                )
+
         );
     }
 
@@ -68,7 +70,7 @@ public class EndEffectorPositions {
 
     public static Command hoverAboveFloor() {
         return new ParallelGroup(
-                Elbow.INSTANCE.setPosition(0.7),     // Elbow low but not touching floor
+                Elbow.INSTANCE.setPosition(0.55),     // Elbow low but not touching floor
                 Wrist.INSTANCE.setPosition(1),
                 Claw.INSTANCE.open()// Wrist angled down toward floor
 
@@ -80,13 +82,13 @@ public class EndEffectorPositions {
                 Claw.INSTANCE.open(),
                 new Delay(0.2), // Wait for claw to open
                 new ParallelGroup(
-                        Elbow.INSTANCE.setPosition(0.58),     // Elbow fully down to floor level
-                        Wrist.INSTANCE.setPosition(1)
+                        Elbow.INSTANCE.setPosition(0.42),     // Elbow fully down to floor level
+                        Wrist.INSTANCE.setPosition(.94)
                 ),
                 new Delay(0.2), // Wait for elbow to settle
                 Claw.INSTANCE.close(),
                 new Delay(0.2),
-                Elbow.INSTANCE.setPosition(0.7)
+                Elbow.INSTANCE.setPosition(0.55)
         );
 
     }

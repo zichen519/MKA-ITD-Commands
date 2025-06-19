@@ -32,9 +32,9 @@ public class FConstants {
         FollowerConstants.useSecondaryTranslationalPID = true;
         FollowerConstants.secondaryTranslationalPIDFCoefficients.setCoefficients(0.27,0,0.02,0); // Not being used, @see useSecondaryTranslationalPID
 
-        FollowerConstants.headingPIDFCoefficients.setCoefficients(2,0,0.2,0);
+        FollowerConstants.headingPIDFCoefficients.setCoefficients(2.5,0,0.3,0);
         FollowerConstants.useSecondaryHeadingPID = true;
-        FollowerConstants.secondaryHeadingPIDFCoefficients.setCoefficients(1.75,0,0.05,0); // Not being used, @see useSecondaryHeadingPID
+        FollowerConstants.secondaryHeadingPIDFCoefficients.setCoefficients(2.3,0,0.1,0); // Not being used, @see useSecondaryHeadingPID
 
         FollowerConstants.drivePIDFCoefficients.setCoefficients(0.017,0,0.000025,0.6,0);
         FollowerConstants.useSecondaryDrivePID = true;

@@ -72,6 +72,8 @@ public class MainTele extends NextFTCOpMode {
         limelight.setPollRateHz(10);
         limelight.pipelineSwitch(0);
 
+        gamepadManager.getGamepad1().getLeftStick().setProfileCurve(x -> (float) (0.5*x));
+
         telemetry.addLine("Initialized");
         telemetry.update();
     }
@@ -134,28 +136,26 @@ public class MainTele extends NextFTCOpMode {
         );
 
         gamepadManager.getGamepad2().getLeftBumper().setPressedCommand(
-                () -> EndEffectorPositions.scoreOnChamber()
+                () -> EndEffectorPositions.ramScore()
         );
 
 
-        gamepadManager.getGamepad2().getLeftStick().getButton().setPressedCommand(
+        gamepadManager.getGamepad2().getTriangle().setPressedCommand(
                 () -> Claw.INSTANCE.open()
         );
 
-        gamepadManager.getGamepad2().getRightStick().getButton().setPressedCommand(
+        gamepadManager.getGamepad2().getCross().setPressedCommand(
                 () -> Claw.INSTANCE.close()
         );
         gamepadManager.getGamepad2().getRightTrigger().setHeldCommand(
-                value -> Lift.INSTANCE.manualControl(value)
-        );
-
-        gamepadManager.getGamepad2().getLeftTrigger().setHeldCommand(
                 value -> Lift.INSTANCE.manualControl(-value)
         );
 
-        gamepadManager.getGamepad2().getCross().setPressedCommand(
-                () -> EndEffectorPositions.ramScore()
+        gamepadManager.getGamepad2().getLeftTrigger().setHeldCommand(
+                value -> Lift.INSTANCE.manualControl(value)
         );
+
+
 
 
         // LEFT STICK: Rotation Control
