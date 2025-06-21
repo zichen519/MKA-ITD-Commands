@@ -29,6 +29,7 @@ public class EndEffectorPositions {
 
     public static Command grabFromWall() {
         return new ParallelGroup(
+
                 Elbow.INSTANCE.setPosition(0.99),     // Elbow positioned for wall height
                 Wrist.INSTANCE.setPosition(0.65),     // Wrist angled for wall grab
                 Rotate.INSTANCE.setPosition(0.8)   // Neutral rotation
