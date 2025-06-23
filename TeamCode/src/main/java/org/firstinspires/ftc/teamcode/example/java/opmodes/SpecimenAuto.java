@@ -42,7 +42,7 @@ public class SpecimenAuto extends PedroOpMode {
     }
 
     private final Pose startPose = new Pose(6.5,66, Math.toRadians(0.0));
-    private final Pose scorePose1 = new Pose(37, 63, Math.toRadians(0));
+    private final Pose scorePose1 = new Pose(37, 72, Math.toRadians(0));
     private final Pose pushPose1 = new Pose(57, 23, Math.toRadians(0));
     private final Pose humanPose1 = new Pose(17, 23, Math.toRadians(0));
     private final Pose pushPose2 = new Pose(52, 16, Math.toRadians(0));
@@ -50,10 +50,10 @@ public class SpecimenAuto extends PedroOpMode {
     private final Pose humanPose3 = new Pose(14, 10, Math.toRadians(0));
     private final Pose grabPose1 = new Pose(12,9, Math.toRadians(0));
     private final Pose grabPose = new Pose(12,32, Math.toRadians(0));
-    private final Pose scorePose2 = new Pose(37,61, Math.toRadians(0));
-    private final Pose scorePose3 = new Pose(37,59, Math.toRadians(0));
-    private final Pose scorePose4 = new Pose(37,57, Math.toRadians(0));
-    private final Pose scorePose5 = new Pose(37,55, Math.toRadians(0));
+    private final Pose scorePose2 = new Pose(37,70, Math.toRadians(0));
+    private final Pose scorePose3 = new Pose(37,68, Math.toRadians(0));
+    private final Pose scorePose4 = new Pose(37,66, Math.toRadians(0));
+    private final Pose scorePose5 = new Pose(37,64, Math.toRadians(0));
     private final Pose parkPose = new Pose(11,24, Math.toRadians(0));
 
     private PathChain score1, push1, human1, push2, human2, human3, grab1, score2, grab2, score3, grab3, score4, grab4, score5, park;
@@ -76,20 +76,20 @@ public class SpecimenAuto extends PedroOpMode {
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
         score2 = follower.pathBuilder().addPath(new BezierCurve(new Point(grabPose1), new Point(33,31, Point.CARTESIAN), new Point(16.5, 63, Point.CARTESIAN),new Point(scorePose2)))
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
-        grab2 = follower.pathBuilder().addPath(new BezierCurve(new Point(scorePose2), new Point(29, 66, Point.CARTESIAN),
+        grab2 = follower.pathBuilder().addPath(new BezierCurve(new Point(scorePose2), new Point(17, 72, Point.CARTESIAN),
                         new Point(27.5, 36, Point.CARTESIAN), new Point(grabPose)))
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
-        score3 = follower.pathBuilder().addPath(new BezierCurve(new Point(grabPose), new Point(27.5, 36, Point.CARTESIAN), new Point(29, 66, Point.CARTESIAN),new Point(scorePose3)))
+        score3 = follower.pathBuilder().addPath(new BezierCurve(new Point(grabPose), new Point(27.5, 36, Point.CARTESIAN), new Point(17, 72, Point.CARTESIAN),new Point(scorePose3)))
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
-        grab3 = follower.pathBuilder().addPath(new BezierCurve(new Point(scorePose3), new Point(29, 64, Point.CARTESIAN),
+        grab3 = follower.pathBuilder().addPath(new BezierCurve(new Point(scorePose3), new Point(17, 70, Point.CARTESIAN),
                         new Point(27.5, 36, Point.CARTESIAN), new Point(grabPose)))
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
-        score4 = follower.pathBuilder().addPath(new BezierCurve(new Point(grabPose), new Point(27.5, 36, Point.CARTESIAN), new Point(29, 64, Point.CARTESIAN),new Point(scorePose4)))
+        score4 = follower.pathBuilder().addPath(new BezierCurve(new Point(grabPose), new Point(27.5, 36, Point.CARTESIAN), new Point(17, 70, Point.CARTESIAN),new Point(scorePose4)))
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
-        grab4 = follower.pathBuilder().addPath(new BezierCurve(new Point(scorePose4), new Point(29, 62, Point.CARTESIAN),
+        grab4 = follower.pathBuilder().addPath(new BezierCurve(new Point(scorePose4), new Point(17, 68, Point.CARTESIAN),
                         new Point(27.5, 36, Point.CARTESIAN), new Point(grabPose)))
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
-        score5 = follower.pathBuilder().addPath(new BezierCurve(new Point(grabPose), new Point(27.5, 36, Point.CARTESIAN), new Point(29, 62, Point.CARTESIAN),new Point(scorePose5)))
+        score5 = follower.pathBuilder().addPath(new BezierCurve(new Point(grabPose), new Point(27.5, 36, Point.CARTESIAN), new Point(17, 68, Point.CARTESIAN),new Point(scorePose5)))
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
         park = follower.pathBuilder().addPath(new BezierCurve(new Point(scorePose5), new Point(13, 58.5, Point.CARTESIAN), new Point(parkPose)))
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
@@ -97,24 +97,26 @@ public class SpecimenAuto extends PedroOpMode {
 
     public Command specAuto(){
         return new SequentialGroup(
-            new ParallelGroup(
-                    new FollowPath(score1,true,0.8),
-                    EndEffectorPositions.ramScore()
+            new SequentialGroup(
+                    EndEffectorPositions.ramScore(),
+                    new FollowPath(score1,true,0.8)
+
             ),
             Claw.INSTANCE.open(),
             new ParallelGroup(
                     EndEffectorPositions.grabFromWall(),
-                    new FollowPath(push1,true,0.8)
+                    new FollowPath(push1,true,0.8),
+                    new SequentialGroup(
+                            new Delay(0.5),
+                            Linkage.INSTANCE.linkageUp()
+                    )
             ),
-            new ParallelGroup(
-                    Linkage.INSTANCE.linkageUp(),
-                    new FollowPath(human1,true,0.8)
-            ),
-            new FollowPath(push2,true,0.8),
-            new FollowPath(human2,true,0.8),
-            new FollowPath(human3,true,0.8),
+            new FollowPath(human1,true,1.0),
+            new FollowPath(push2,true,1.0),
+            new FollowPath(human2,true,1.0),
+            new FollowPath(human3,true,1.0),
             new FollowPath(grab1,true,0.5),
-            new Delay(0.5),
+            new Delay(0.3),
             Claw.INSTANCE.close(),
             new ParallelGroup(
                     EndEffectorPositions.ramScore(),
@@ -134,7 +136,7 @@ public class SpecimenAuto extends PedroOpMode {
                             )
                     )
             ),
-            new Delay(0.5),
+            new Delay(0.3),
             Claw.INSTANCE.close(),
 
 
@@ -156,7 +158,7 @@ public class SpecimenAuto extends PedroOpMode {
                             )
                     )
             ),
-            new Delay(0.5),
+            new Delay(0.3),
             Claw.INSTANCE.close(),
             new ParallelGroup(
                     EndEffectorPositions.ramScore(),
@@ -176,7 +178,7 @@ public class SpecimenAuto extends PedroOpMode {
                             )
                     )
             ),
-            new Delay(0.5),
+            new Delay(0.3   ),
             Claw.INSTANCE.close(),
             new ParallelGroup(
                     EndEffectorPositions.ramScore(),

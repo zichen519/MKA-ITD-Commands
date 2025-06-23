@@ -41,10 +41,10 @@ public class EndEffectorPositions {
                 Wrist.INSTANCE.setPosition(1),
                 new Delay(0.5),
                 new ParallelGroup(
-                        Wrist.INSTANCE.setPosition(.25),
+                        Wrist.INSTANCE.setPosition(.3),
                         Elbow.INSTANCE.setPosition(.45),
                         Rotate.INSTANCE.setPosition(.23),
-                        Linkage.INSTANCE.setTarget(-850)
+                        Linkage.INSTANCE.setTarget(-800)
                 )
 
         );
@@ -71,7 +71,7 @@ public class EndEffectorPositions {
 
     public static Command hoverAboveFloor() {
         return new ParallelGroup(
-                Elbow.INSTANCE.setPosition(0.575),     // Elbow low but not touching floor
+                Elbow.INSTANCE.setPosition(0.595),     // Elbow low but not touching floor
                 Wrist.INSTANCE.setPosition(.85),
                 Claw.INSTANCE.open()// Wrist angled down toward floor
 

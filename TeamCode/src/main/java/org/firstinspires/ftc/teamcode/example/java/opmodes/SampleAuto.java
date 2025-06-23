@@ -60,7 +60,7 @@ public class SampleAuto extends PedroOpMode {
                 .setLinearHeadingInterpolation(startPose.getHeading(),scorePose.getHeading())
                 .build();
 
-        grab1 = follower.pathBuilder().addPath(new BezierLine(new Point(scorePose), new Point(pickup1Pose)))
+        grab1 = follower.pathBuilder().addPath(new BezierCurve(new Point(scorePose), new Point(19,109,Point.CARTESIAN), new Point(pickup1Pose)))
                 .setLinearHeadingInterpolation(scorePose.getHeading(),pickup1Pose.getHeading()).build();
         score1 = follower.pathBuilder().addPath(new BezierLine(new Point(pickup1Pose), new Point(scorePose)))
                 .setLinearHeadingInterpolation(pickup1Pose.getHeading(),scorePose.getHeading()).build();
@@ -81,7 +81,7 @@ public class SampleAuto extends PedroOpMode {
 
                 //score preload
                 new ParallelGroup(
-                        new FollowPath(scorePreload, true, 0.8),
+                        new FollowPath(scorePreload, true, 0.6),
                         Lift.INSTANCE.toHighBasket(),
                         EndEffectorPositions.avoidBasket()
                 ),
