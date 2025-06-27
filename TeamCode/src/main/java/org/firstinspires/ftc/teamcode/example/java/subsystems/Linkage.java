@@ -35,13 +35,15 @@ public class Linkage extends Subsystem {
 
     public static int target = 0;
 
+    public boolean linkageDown;
+
     private double calculateFeedforward() {
-        return Math.cos(Math.toRadians(target / ((ticksPerRevolution * gearRatio)/360))) * 0.08;
+        return Math.cos((Math.toRadians(target / ((ticksPerRevolution * gearRatio)/360)))+Math.toRadians(120)) * 0.08;
     }
 
     // Arm feedforward (better for pivoting mechanisms than static feedforward)
     ;
-    public PIDFController controller = new PIDFController(0.006, 0.0,0.00035, v -> calculateFeedforward(), 30);
+    public PIDFController controller = new PIDFController(0.007, 0.0,0.00035, v -> calculateFeedforward(), 30);
 
     // Motor configuration
     public String motorName = "lift";
@@ -53,11 +55,11 @@ public class Linkage extends Subsystem {
 
 
     public Command linkageUp() {
-        return new RunToPosition(linkageMotor, (double)-10, controller, this);
+        return new RunToPosition(linkageMotor, (double)25, controller, this);
     }
 
     public Command linkageDown() {
-
+        linkageDown = true;
         return new RunToPosition(linkageMotor, (double)-1680, controller, this);
     }
 
@@ -92,14 +94,13 @@ public class Linkage extends Subsystem {
         // Update arm feedforward from dashboard
         */
 
-        double currentAngle = linkageMotor.getCurrentPosition() / (ticksPerRevolution * gearRatio) * 360;
+        double currentAngle = (linkageMotor.getCurrentPosition() / (ticksPerRevolution * gearRatio) * 360) + 120;
         double targetAngle = target / (ticksPerRevolution * gearRatio) * 360;
         // Telemetry
 
         OpModeData.telemetry.addData("Linkage Current Position", "%.1f ticks", linkageMotor.getCurrentPosition());
-        //OpModeData.telemetry.addData("Target Position", "%d ticks", target);
+        OpModeData.telemetry.addData("Linkage State", linkageDown);
         OpModeData.telemetry.addData("Current Angle", "%.1f°", currentAngle);
-        OpModeData.telemetry.addData("Target Angle", "%.1f°", targetAngle);
         OpModeData.telemetry.addData("Linkage Motor Power", "%.3f", linkageMotor.getPower());
 
 

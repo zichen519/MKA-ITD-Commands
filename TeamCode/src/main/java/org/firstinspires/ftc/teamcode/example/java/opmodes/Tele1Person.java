@@ -4,11 +4,9 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.limelightvision.LLResult;
-import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.rowanmcalpin.nextftc.core.command.Command;
 import com.rowanmcalpin.nextftc.core.command.groups.ParallelGroup;
 import com.rowanmcalpin.nextftc.core.command.groups.SequentialGroup;
@@ -27,11 +25,11 @@ import org.firstinspires.ftc.teamcode.example.java.subsystems.Linkage;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Rotate;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Wrist;
 
-@TeleOp(name = "MAIN")
+@TeleOp(name = "MAIN-1Person")
 @Config
-public class MainTele extends NextFTCOpMode {
+public class Tele1Person extends NextFTCOpMode {
 
-    public MainTele() {
+    public Tele1Person() {
         super(
                 Elbow.INSTANCE,
                 Wrist.INSTANCE,
@@ -55,15 +53,6 @@ public class MainTele extends NextFTCOpMode {
 
     private Limelight3A limelight;
 
-    private Servo light;
-    private int pipelineIndex = 0;
-    private int[] pipelines = {0, 1, 2}; // RED, YELLOW, BLUE
-    private boolean prevCircle;
-    private boolean currCircle;
-
-
-
-
     @Override
     public void onInit() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -76,10 +65,10 @@ public class MainTele extends NextFTCOpMode {
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        light = hardwareMap.get(Servo.class,"light");
+
         motors = new MotorEx[] {frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor};
 
-        gamepadManager.getGamepad1().getLeftStick().setProfileCurve(x -> (float) (0.5*x));
+        gamepadManager.getGamepad2().getLeftStick().setProfileCurve(x -> (float) (0.5*x));
 
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         limelight.setPollRateHz(10);
@@ -91,8 +80,8 @@ public class MainTele extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed() {
         // Start driver-controlled driving
-        driverControlled = new MecanumDriverControlled(motors, gamepadManager.getGamepad1().getRightStick(),
-                gamepadManager.getGamepad1().getLeftStick());
+        driverControlled = new MecanumDriverControlled(motors, gamepadManager.getGamepad2().getRightStick(),
+                gamepadManager.getGamepad2().getLeftStick());
         driverControlled.invoke();
         limelight.start();
 
@@ -187,25 +176,6 @@ public class MainTele extends NextFTCOpMode {
 
             Rotate.INSTANCE.setPosition((outputs[5]/255)+0.2).invoke();
 
-        }
-        currCircle = gamepad1.circle;
-        if(currCircle&&!prevCircle){
-            pipelineIndex++;
-            limelight.pipelineSwitch(pipelines[pipelineIndex%3]);
-            prevCircle=currCircle;
-        }
-        LLStatus status = limelight.getStatus();
-        if(status.getPipelineIndex() == 0) {
-            light.setPosition(0.28);
-            telemetry.addData("COLOR", "RED");
-        }
-        else if(status.getPipelineIndex()==1) {
-            light.setPosition(0.388);
-            telemetry.addData("COLOR", "YELLOW");
-        }
-        else if(status.getPipelineIndex()==2){
-            light.setPosition(0.611);
-            telemetry.addData("COLOR","BLUE");
         }
         telemetry.update();
     }

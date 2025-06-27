@@ -78,7 +78,7 @@ public class PositionsTester extends NextFTCOpMode {
     @Override
     public void onUpdate() {
         // Update controller with dashboard values
-
+        telemetry.update();
 
 
 

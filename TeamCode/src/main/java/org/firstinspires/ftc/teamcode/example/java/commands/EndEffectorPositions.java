@@ -18,7 +18,7 @@ public class EndEffectorPositions {
     public static Command basketScore() {
         return new ParallelGroup(
                 Elbow.INSTANCE.setPosition(0.55),     // Elbow up for basket height
-                Wrist.INSTANCE.setPosition(0.2),     // Wrist angled for basket
+                Wrist.INSTANCE.setPosition(0.15),     // Wrist angled for basket
                 Rotate.INSTANCE.setPosition(0.52)   // Neutral rotation
         );
     }
@@ -39,12 +39,12 @@ public class EndEffectorPositions {
     public static Command ramScore(){
         return new SequentialGroup(
                 Wrist.INSTANCE.setPosition(1),
-                new Delay(0.5),
+                new Delay(0.25),
                 new ParallelGroup(
-                        Wrist.INSTANCE.setPosition(.3),
-                        Elbow.INSTANCE.setPosition(.45),
+                        Wrist.INSTANCE.setPosition(.275),
+                        Elbow.INSTANCE.setPosition(.4),
                         Rotate.INSTANCE.setPosition(.23),
-                        Linkage.INSTANCE.setTarget(-800)
+                        Linkage.INSTANCE.setTarget(-750)
                 )
 
         );
@@ -71,7 +71,7 @@ public class EndEffectorPositions {
 
     public static Command hoverAboveFloor() {
         return new ParallelGroup(
-                Elbow.INSTANCE.setPosition(0.595),     // Elbow low but not touching floor
+                Elbow.INSTANCE.setPosition(0.61),     // Elbow low but not touching floor
                 Wrist.INSTANCE.setPosition(.85),
                 Claw.INSTANCE.open()// Wrist angled down toward floor
 

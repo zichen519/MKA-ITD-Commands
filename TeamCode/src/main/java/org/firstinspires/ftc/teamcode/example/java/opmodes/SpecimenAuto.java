@@ -42,18 +42,18 @@ public class SpecimenAuto extends PedroOpMode {
     }
 
     private final Pose startPose = new Pose(6.5,66, Math.toRadians(0.0));
-    private final Pose scorePose1 = new Pose(37, 72, Math.toRadians(0));
+    private final Pose scorePose1 = new Pose(41, 75, Math.toRadians(0));
     private final Pose pushPose1 = new Pose(57, 23, Math.toRadians(0));
     private final Pose humanPose1 = new Pose(17, 23, Math.toRadians(0));
     private final Pose pushPose2 = new Pose(52, 16, Math.toRadians(0));
     private final Pose humanPose2 = new Pose(17, 16, Math.toRadians(0));
-    private final Pose humanPose3 = new Pose(14, 10, Math.toRadians(0));
-    private final Pose grabPose1 = new Pose(12,9, Math.toRadians(0));
-    private final Pose grabPose = new Pose(12,32, Math.toRadians(0));
-    private final Pose scorePose2 = new Pose(37,70, Math.toRadians(0));
-    private final Pose scorePose3 = new Pose(37,68, Math.toRadians(0));
-    private final Pose scorePose4 = new Pose(37,66, Math.toRadians(0));
-    private final Pose scorePose5 = new Pose(37,64, Math.toRadians(0));
+    private final Pose humanPose3 = new Pose(14, 9, Math.toRadians(0));
+    private final Pose grabPose1 = new Pose(11.75,9, Math.toRadians(0));
+    private final Pose grabPose = new Pose(11.75,32, Math.toRadians(0));
+    private final Pose scorePose2 = new Pose(42,74, Math.toRadians(0));
+    private final Pose scorePose3 = new Pose(42,72, Math.toRadians(0));
+    private final Pose scorePose4 = new Pose(42,70, Math.toRadians(0));
+    private final Pose scorePose5 = new Pose(42,68, Math.toRadians(0));
     private final Pose parkPose = new Pose(11,24, Math.toRadians(0));
 
     private PathChain score1, push1, human1, push2, human2, human3, grab1, score2, grab2, score3, grab3, score4, grab4, score5, park;
@@ -63,33 +63,37 @@ public class SpecimenAuto extends PedroOpMode {
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
         push1 = follower.pathBuilder().addPath(new BezierCurve(new Point(scorePose1), new Point(8.000, 39.000, Point.CARTESIAN),
                         new Point(60.000, 38.000, Point.CARTESIAN), new Point(pushPose1)))
-                .setConstantHeadingInterpolation(Math.toRadians(0)).build();
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .setPathEndTValueConstraint(.97).build();
         human1 = follower.pathBuilder().addPath(new BezierLine(new Point(pushPose1), new Point(humanPose1)))
-                .setConstantHeadingInterpolation(Math.toRadians(0)).build();
-        push2 = follower.pathBuilder().addPath(new BezierCurve(new Point(humanPose1), new Point(65.000, 25.000, Point.CARTESIAN), new Point(pushPose2)))
-                .setConstantHeadingInterpolation(Math.toRadians(0)).build();
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .setPathEndTValueConstraint(.97).build();
+        push2 = follower.pathBuilder().addPath(new BezierCurve(new Point(humanPose1), new Point(53, 27.000, Point.CARTESIAN), new Point(pushPose2)))
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .setPathEndTValueConstraint(.97).build();
         human2 = follower.pathBuilder().addPath(new BezierLine(new Point(pushPose2), new Point(humanPose2)))
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .setPathEndTValueConstraint(.97).build();
+        human3 = follower.pathBuilder().addPath(new BezierCurve(new Point(humanPose2), new Point(85, 6, Point.CARTESIAN), new Point(grabPose1)))
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .setPathEndTValueConstraint(.97).build();
+
+        score2 = follower.pathBuilder().addPath(new BezierCurve(new Point(grabPose1), new Point(33,31, Point.CARTESIAN), new Point(16.5, 70, Point.CARTESIAN),new Point(scorePose2)))
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
-        human3 = follower.pathBuilder().addPath(new BezierCurve(new Point(humanPose2), new Point(85, 6, Point.CARTESIAN), new Point(humanPose3)))
-                .setConstantHeadingInterpolation(Math.toRadians(0)).build();
-        grab1 = follower.pathBuilder().addPath(new BezierLine(new Point(humanPose3), new Point(grabPose1)))
-                .setConstantHeadingInterpolation(Math.toRadians(0)).build();
-        score2 = follower.pathBuilder().addPath(new BezierCurve(new Point(grabPose1), new Point(33,31, Point.CARTESIAN), new Point(16.5, 63, Point.CARTESIAN),new Point(scorePose2)))
-                .setConstantHeadingInterpolation(Math.toRadians(0)).build();
-        grab2 = follower.pathBuilder().addPath(new BezierCurve(new Point(scorePose2), new Point(17, 72, Point.CARTESIAN),
+        grab2 = follower.pathBuilder().addPath(new BezierCurve(new Point(scorePose2), new Point(17, 74, Point.CARTESIAN),
                         new Point(27.5, 36, Point.CARTESIAN), new Point(grabPose)))
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
-        score3 = follower.pathBuilder().addPath(new BezierCurve(new Point(grabPose), new Point(27.5, 36, Point.CARTESIAN), new Point(17, 72, Point.CARTESIAN),new Point(scorePose3)))
+        score3 = follower.pathBuilder().addPath(new BezierCurve(new Point(grabPose), new Point(27.5, 36, Point.CARTESIAN), new Point(17, 76, Point.CARTESIAN),new Point(scorePose3)))
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
-        grab3 = follower.pathBuilder().addPath(new BezierCurve(new Point(scorePose3), new Point(17, 70, Point.CARTESIAN),
+        grab3 = follower.pathBuilder().addPath(new BezierCurve(new Point(scorePose3), new Point(17, 74, Point.CARTESIAN),
                         new Point(27.5, 36, Point.CARTESIAN), new Point(grabPose)))
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
-        score4 = follower.pathBuilder().addPath(new BezierCurve(new Point(grabPose), new Point(27.5, 36, Point.CARTESIAN), new Point(17, 70, Point.CARTESIAN),new Point(scorePose4)))
+        score4 = follower.pathBuilder().addPath(new BezierCurve(new Point(grabPose), new Point(27.5, 36, Point.CARTESIAN), new Point(17, 74, Point.CARTESIAN),new Point(scorePose4)))
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
-        grab4 = follower.pathBuilder().addPath(new BezierCurve(new Point(scorePose4), new Point(17, 68, Point.CARTESIAN),
+        grab4 = follower.pathBuilder().addPath(new BezierCurve(new Point(scorePose4), new Point(17, 72, Point.CARTESIAN),
                         new Point(27.5, 36, Point.CARTESIAN), new Point(grabPose)))
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
-        score5 = follower.pathBuilder().addPath(new BezierCurve(new Point(grabPose), new Point(27.5, 36, Point.CARTESIAN), new Point(17, 68, Point.CARTESIAN),new Point(scorePose5)))
+        score5 = follower.pathBuilder().addPath(new BezierCurve(new Point(grabPose), new Point(27.5, 36, Point.CARTESIAN), new Point(17, 72, Point.CARTESIAN),new Point(scorePose5)))
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
         park = follower.pathBuilder().addPath(new BezierCurve(new Point(scorePose5), new Point(13, 58.5, Point.CARTESIAN), new Point(parkPose)))
                 .setConstantHeadingInterpolation(Math.toRadians(0)).build();
@@ -98,102 +102,131 @@ public class SpecimenAuto extends PedroOpMode {
     public Command specAuto(){
         return new SequentialGroup(
             new SequentialGroup(
-                    EndEffectorPositions.ramScore(),
-                    new FollowPath(score1,true,0.8)
+                    new ParallelGroup(
+                            Wrist.INSTANCE.setPosition(.2),
+                            Elbow.INSTANCE.setPosition(.39),
+                            Rotate.INSTANCE.setPosition(.23),
+                            Linkage.INSTANCE.setTarget(-735)
+                    ),
+                    new FollowPath(score1,true,1.0)
 
             ),
             Claw.INSTANCE.open(),
             new ParallelGroup(
                     EndEffectorPositions.grabFromWall(),
-                    new FollowPath(push1,true,0.8),
+                    new FollowPath(push1,true,1.0),
                     new SequentialGroup(
                             new Delay(0.5),
-                            Linkage.INSTANCE.linkageUp()
+                            Linkage.INSTANCE.setTarget(50)
                     )
             ),
             new FollowPath(human1,true,1.0),
             new FollowPath(push2,true,1.0),
             new FollowPath(human2,true,1.0),
             new FollowPath(human3,true,1.0),
-            new FollowPath(grab1,true,0.5),
-            new Delay(0.3),
+
+            new Delay(0.25),
             Claw.INSTANCE.close(),
+            new Delay(0.3),
             new ParallelGroup(
-                    EndEffectorPositions.ramScore(),
+                    new ParallelGroup(
+                            Wrist.INSTANCE.setPosition(.2),
+                            Elbow.INSTANCE.setPosition(.39),
+                            Rotate.INSTANCE.setPosition(.23),
+                            Linkage.INSTANCE.setTarget(-735)
+                    ),
                     new SequentialGroup(
-                            new Delay(0.3),
-                            new FollowPath(score2,true,0.8)
+                            new Delay(0.25),
+                            new FollowPath(score2,true,1.0)
                     )
             ),
             Claw.INSTANCE.open(),
             new ParallelGroup(
-                    new FollowPath(grab2,true,0.8),
+                    new FollowPath(grab2,true,.8),
                     new SequentialGroup(
                             new Delay(0.4),
                             new ParallelGroup(
                                     EndEffectorPositions.grabFromWall(),
-                                    Linkage.INSTANCE.linkageUp()
+                                    Linkage.INSTANCE.setTarget(50)
                             )
                     )
             ),
-            new Delay(0.3),
+            new Delay(0.25),
             Claw.INSTANCE.close(),
-
+            new Delay(0.25),
 
             new ParallelGroup(
-                   EndEffectorPositions.ramScore(),
+                    new ParallelGroup(
+                            Wrist.INSTANCE.setPosition(.2),
+                            Elbow.INSTANCE.setPosition(.39),
+                            Rotate.INSTANCE.setPosition(.23),
+                            Linkage.INSTANCE.setTarget(-735)
+                    ),
                    new SequentialGroup(
-                           new Delay(0.3),
-                           new FollowPath(score3,true,0.8)
+                           new Delay(0.25),
+                           new FollowPath(score3,true,1.0)
                    )
             ),
             Claw.INSTANCE.open(),
             new ParallelGroup(
-                    new FollowPath(grab3,true,0.8),
+                    new FollowPath(grab3,true,.8),
                     new SequentialGroup(
                             new Delay(0.4),
                             new ParallelGroup(
                                     EndEffectorPositions.grabFromWall(),
-                                    Linkage.INSTANCE.linkageUp()
+                                    Linkage.INSTANCE.setTarget(50)
                             )
                     )
             ),
-            new Delay(0.3),
+            new Delay(0.25),
             Claw.INSTANCE.close(),
+            new Delay(0.25),
             new ParallelGroup(
-                    EndEffectorPositions.ramScore(),
+                    new ParallelGroup(
+                            Wrist.INSTANCE.setPosition(.2),
+                            Elbow.INSTANCE.setPosition(.39),
+                            Rotate.INSTANCE.setPosition(.23),
+                            Linkage.INSTANCE.setTarget(-735)
+                    ),
                     new SequentialGroup(
-                            new Delay(0.3),
-                            new FollowPath(score4,true,0.8)
+                            new Delay(0.25),
+                            new FollowPath(score4,true,1.0)
                     )
             ),
             Claw.INSTANCE.open(),
             new ParallelGroup(
-                    new FollowPath(grab4,true,0.8),
+                    new FollowPath(grab4,true,.8),
                     new SequentialGroup(
                             new Delay(0.4),
                             new ParallelGroup(
                                     EndEffectorPositions.grabFromWall(),
-                                    Linkage.INSTANCE.linkageUp()
+                                    Linkage.INSTANCE.setTarget(50)
                             )
                     )
             ),
-            new Delay(0.3   ),
+            new Delay(0.25),
             Claw.INSTANCE.close(),
+            new Delay(0.25),
             new ParallelGroup(
-                    EndEffectorPositions.ramScore(),
+                    new ParallelGroup(
+                            Wrist.INSTANCE.setPosition(.2),
+                            Elbow.INSTANCE.setPosition(.39),
+                            Rotate.INSTANCE.setPosition(.23),
+                            Linkage.INSTANCE.setTarget(-735)
+                    ),
                     new SequentialGroup(
-                            new Delay(0.3),
-                            new FollowPath(score5,true,0.8)
+                            new Delay(0.25),
+                            new FollowPath(score5,true,1.0)
                     )
             ),
+            Claw.INSTANCE.open(),
             new ParallelGroup(
-                    new FollowPath(park,true,0.8),
+                    new FollowPath(park,true,1.0),
                     new SequentialGroup(
                             new Delay(0.4),
                             new ParallelGroup(
                                     Elbow.INSTANCE.setPosition(.99),
-                                    Linkage.INSTANCE.linkageUp()
+                                    Linkage.INSTANCE.setTarget(50)
                             )
 
                     )
@@ -212,7 +245,8 @@ public class SpecimenAuto extends PedroOpMode {
         buildPaths();
         Elbow.INSTANCE.setPosition(0).invoke();
         Claw.INSTANCE.close().invoke();
-
+        Wrist.INSTANCE.setPosition(0.1).invoke();
+        Rotate.INSTANCE.setPosition(0.23).invoke();
         OpModeData.telemetry.addData("Status", "Initialized");
         OpModeData.telemetry.update();
     }

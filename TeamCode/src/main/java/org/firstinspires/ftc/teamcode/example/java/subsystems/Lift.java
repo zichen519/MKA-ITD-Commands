@@ -28,7 +28,7 @@ public class Lift extends Subsystem {
     public static double d = 0.00025;
     public static double f = 0.14;
     //public static int target = 0;
-    public PIDFController controller = new PIDFController(0.0125, 0.0, 0.00025, v -> f,30);
+    public PIDFController controller = new PIDFController(0.02, 0.0, 0.0004, v -> f,30);
 
 
 
@@ -37,7 +37,16 @@ public class Lift extends Subsystem {
     public String rightMotorName = "slide2";
 
     public Command manualControl(float power) {
-        return new SetPower(liftMotors, (double)power, this);
+        if(!Linkage.INSTANCE.linkageDown){
+            return new SetPower(liftMotors, (double)power, this);
+        }
+        else{
+            if(leftMotor.getCurrentPosition()<350  || power < 0){
+                return new SetPower(liftMotors, (double)power, this);
+            }
+            else return new SetPower(liftMotors, 0,this);
+        }
+
     }
 
 
