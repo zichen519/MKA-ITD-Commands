@@ -94,8 +94,8 @@ public class Lift extends Subsystem {
         leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         rightMotor = new MotorEx(rightMotorName);
         rightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        leftMotor.resetEncoder();
-        rightMotor.resetEncoder();
+
+
         liftMotors = new MotorGroup(leftMotor, rightMotor);
 
 

@@ -302,6 +302,10 @@ public class SampleAuto extends PedroOpMode {
         limelight = OpModeData.INSTANCE.getHardwareMap().get(Limelight3A.class, "limelight");
         limelight.setPollRateHz(10);
         limelight.pipelineSwitch(3);
+
+        Lift.INSTANCE.leftMotor.resetEncoder();
+        Lift.INSTANCE.rightMotor.resetEncoder();
+        Linkage.INSTANCE.linkageMotor.resetEncoder();
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.rowanmcalpin.nextftc.core.command.Command;
 import com.rowanmcalpin.nextftc.core.command.groups.ParallelGroup;
 import com.rowanmcalpin.nextftc.core.command.groups.SequentialGroup;
+import com.rowanmcalpin.nextftc.core.command.utility.InstantCommand;
 import com.rowanmcalpin.nextftc.ftc.NextFTCOpMode;
 import com.rowanmcalpin.nextftc.ftc.OpModeData;
 import com.rowanmcalpin.nextftc.ftc.driving.MecanumDriverControlled;
@@ -27,11 +28,11 @@ import org.firstinspires.ftc.teamcode.example.java.subsystems.Linkage;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Rotate;
 import org.firstinspires.ftc.teamcode.example.java.subsystems.Wrist;
 
-@TeleOp(name = "MAIN")
+@TeleOp(name = "COMPETITION TELEOP")
 @Config
-public class MainTele extends NextFTCOpMode {
+public class CompTele extends NextFTCOpMode {
 
-    public MainTele() {
+    public CompTele() {
         super(
                 Elbow.INSTANCE,
                 Wrist.INSTANCE,
@@ -84,10 +85,6 @@ public class MainTele extends NextFTCOpMode {
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         limelight.setPollRateHz(10);
         limelight.pipelineSwitch(0);
-
-        Lift.INSTANCE.leftMotor.resetEncoder();
-        Lift.INSTANCE.rightMotor.resetEncoder();
-        Linkage.INSTANCE.linkageMotor.resetEncoder();
 
         telemetry.addLine("Initialized");
         telemetry.update();
@@ -174,6 +171,24 @@ public class MainTele extends NextFTCOpMode {
 
         gamepadManager.getGamepad2().getLeftTrigger().setHeldCommand(
                 value -> Lift.INSTANCE.manualControl(value)
+        );
+
+        gamepadManager.getGamepad1().getRightBumper().setPressedCommand(
+                () -> new InstantCommand(
+                        () -> {
+                            gamepadManager.getGamepad1().getLeftStick().setProfileCurve(x -> (float) (0.5 * x));
+                            gamepadManager.getGamepad1().getRightStick().setProfileCurve(x -> (float) (0.5 * x));
+                        }
+                )
+        );
+
+        gamepadManager.getGamepad1().getRightBumper().setReleasedCommand(
+                () -> new InstantCommand(
+                        () -> {
+                            gamepadManager.getGamepad1().getLeftStick().setProfileCurve(x -> x);
+                            gamepadManager.getGamepad1().getRightStick().setProfileCurve(x -> x);
+                        }
+                )
         );
 
 

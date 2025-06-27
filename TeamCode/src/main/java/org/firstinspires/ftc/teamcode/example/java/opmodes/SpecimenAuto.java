@@ -48,8 +48,8 @@ public class SpecimenAuto extends PedroOpMode {
     private final Pose pushPose2 = new Pose(52, 16, Math.toRadians(0));
     private final Pose humanPose2 = new Pose(17, 16, Math.toRadians(0));
     private final Pose humanPose3 = new Pose(14, 9, Math.toRadians(0));
-    private final Pose grabPose1 = new Pose(11.75,9, Math.toRadians(0));
-    private final Pose grabPose = new Pose(11.75,32, Math.toRadians(0));
+    private final Pose grabPose1 = new Pose(11.875,9, Math.toRadians(0));
+    private final Pose grabPose = new Pose(11.875,32, Math.toRadians(0));
     private final Pose scorePose2 = new Pose(42,74, Math.toRadians(0));
     private final Pose scorePose3 = new Pose(42,72, Math.toRadians(0));
     private final Pose scorePose4 = new Pose(42,70, Math.toRadians(0));
@@ -247,6 +247,11 @@ public class SpecimenAuto extends PedroOpMode {
         Claw.INSTANCE.close().invoke();
         Wrist.INSTANCE.setPosition(0.1).invoke();
         Rotate.INSTANCE.setPosition(0.23).invoke();
+
+        Lift.INSTANCE.leftMotor.resetEncoder();
+        Lift.INSTANCE.rightMotor.resetEncoder();
+        Linkage.INSTANCE.linkageMotor.resetEncoder();
+
         OpModeData.telemetry.addData("Status", "Initialized");
         OpModeData.telemetry.update();
     }

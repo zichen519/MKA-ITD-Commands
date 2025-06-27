@@ -41,8 +41,8 @@ public class EndEffectorPositions {
                 Wrist.INSTANCE.setPosition(1),
                 new Delay(0.25),
                 new ParallelGroup(
-                        Wrist.INSTANCE.setPosition(.275),
-                        Elbow.INSTANCE.setPosition(.4),
+                        Wrist.INSTANCE.setPosition(.2),
+                        Elbow.INSTANCE.setPosition(.39),
                         Rotate.INSTANCE.setPosition(.23),
                         Linkage.INSTANCE.setTarget(-750)
                 )

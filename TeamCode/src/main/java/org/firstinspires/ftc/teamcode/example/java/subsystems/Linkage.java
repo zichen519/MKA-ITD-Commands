@@ -77,7 +77,7 @@ public class Linkage extends Subsystem {
     public void initialize() {
         linkageMotor = new MotorEx(motorName);
         linkageMotor.setDirection(DcMotorSimple.Direction.FORWARD);  // Adjust as needed
-        linkageMotor.resetEncoder();
+
 
           // Smaller tolerance for precise positioning
     }
